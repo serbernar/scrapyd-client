@@ -1,14 +1,13 @@
 from __future__ import print_function
 
-import sys
 from argparse import ArgumentParser
+import sys
 from traceback import print_exc
-
-from requests.exceptions import ConnectionError
 
 from scrapyd_client import commands
 from scrapyd_client.utils import ErrorResponse, MalformedRespone, get_config
 
+from requests.exceptions import ConnectionError
 
 DEFAULT_TARGET_URL = 'http://localhost:6800'
 ISSUE_TRACKER_URL = 'https://github.com/scrapy/scrapyd-client/issues'

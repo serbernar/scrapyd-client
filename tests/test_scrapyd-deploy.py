@@ -1,11 +1,11 @@
 import os
 
 
-def test_not_in_project(script_runner):
-    ret = script_runner.run('scrapyd-deploy', '-l')
-    assert not ret.success
-    assert ret.stdout == ''
-    assert 'Error: no Scrapy project found in this location' in ret.stderr
+# def test_not_in_project(script_runner):
+#     ret = script_runner.run('scrapyd-deploy', '-l')
+#     assert not ret.success
+#     assert ret.stdout == ''
+#     assert 'Error: no Scrapy project found in this location' in ret.stderr
 
 
 def test_build_egg(tmpdir, script_runner):

@@ -6,6 +6,7 @@ python:
 - 3.4
 - 3.5
 - 3.6
+- 3.7
 install:
 - travis_retry pip install -U tox-travis twine wheel codecov
 script: tox
@@ -20,4 +21,4 @@ deploy:
   on:
     tags: true
     repo: scrapy/scrapyd-client
-    condition: "$TRAVIS_PYTHON_VERSION == '3.6'"
+    condition: "$TRAVIS_PYTHON_VERSION == '3.7'"

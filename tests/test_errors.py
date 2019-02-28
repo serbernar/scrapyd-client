@@ -1,7 +1,6 @@
-from requests.exceptions import ConnectionError
-
-
 from scrapyd_client.utils import JSONDecodeError
+
+from requests.exceptions import ConnectionError
 
 
 def test_decode_error(mocker, script_runner):
@@ -17,13 +16,15 @@ def test_decode_error(mocker, script_runner):
 
 def test_projects(mocker, script_runner):
     mock_response = mocker.Mock()
-    mock_response.json.return_value = {'status': 'error', 'message': 'Something went wrong.'}
+    mock_response.json.return_value = {'status': 'error',
+                                       'message': 'Something went wrong.'}
     mock_get = mocker.patch('scrapyd_client.utils.requests.get', autospec=True)
     mock_get.return_value = mock_response
     result = script_runner.run('scrapyd-client', 'projects')
 
     assert not result.success
-    assert result.stdout == 'Scrapyd responded with an error:\nSomething went wrong.\n'
+    assert result.stdout == 'Scrapyd responded with an error:\n' \
+                            'Something went wrong.\n'
 
 
 def test_connection_error(mocker, script_runner):
@@ -32,4 +33,5 @@ def test_connection_error(mocker, script_runner):
     result = script_runner.run('scrapyd-client', 'projects')
 
     assert not result.success
-    assert result.stdout == 'Failed to connect to target (http://localhost:6800):\n\n'
+    assert result.stdout == 'Failed to connect to target ' \
+                            '(http://localhost:6800):\n\n'

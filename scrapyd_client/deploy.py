@@ -1,28 +1,28 @@
 #!/usr/bin/env python
 
-import sys
-import os
 import glob
-import tempfile
-import shutil
-import time
-from six.moves.urllib.request import (build_opener, install_opener,
-                                      HTTPRedirectHandler as UrllibHTTPRedirectHandler,
-                                      Request, urlopen)
-from six.moves.urllib.error import HTTPError, URLError
-import netrc
 import json
+import netrc
 from optparse import OptionParser
-from six.moves.urllib.parse import urlparse, urljoin
-from subprocess import Popen, PIPE, check_call
+import os
+import shutil
+from subprocess import PIPE, Popen, check_call
+import sys
+import tempfile
+import time
 
-from w3lib.form import encode_multipart
-import setuptools  # noqa: F401 not used in code but needed in runtime, don't remove!
-
-from scrapy.utils.project import inside_project
-from scrapy.utils.http import basic_auth_header
-from scrapy.utils.python import retry_on_eintr
 from scrapy.utils.conf import get_config, closest_scrapy_cfg
+from scrapy.utils.http import basic_auth_header
+from scrapy.utils.project import inside_project
+from scrapy.utils.python import retry_on_eintr
+import setuptools  # noqa: F401 not used in code but needed in runtime, don't remove!
+from six.moves.urllib.error import URLError, HTTPError
+from six.moves.urllib.parse import urljoin, urlparse
+from six.moves.urllib.request import (
+    Request, HTTPRedirectHandler as UrllibHTTPRedirectHandler,
+    urlopen, build_opener, install_opener
+)
+from w3lib.form import encode_multipart
 
 _SETUP_PY_TEMPLATE = """
 # Automatically created by: scrapyd-deploy

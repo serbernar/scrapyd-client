@@ -1,9 +1,9 @@
-from os.path import dirname, join
+from os.path import join, dirname
 import sys
 
-import requests
 from scrapy.utils.conf import get_config as get_scrapy_config
 
+import requests
 
 with open(join(dirname(__file__), 'VERSION'), 'rt') as f:
     VERSION = f.readline().strip()

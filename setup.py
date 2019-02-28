@@ -6,7 +6,7 @@ with open(join(dirname(__file__), 'scrapyd_client/VERSION')) as f:
 setup_args = {
     'name': 'scrapyd-client',
     'version': version,
-    'url': 'https://github.com/scrapy/scrapyd-client',
+    'url': 'https://github.com/serbernar/scrapyd-client',
     'description': 'A client for scrapyd',
     'long_description': open('README.rst').read(),
     'author': 'Scrapy developers',
@@ -26,6 +26,7 @@ setup_args = {
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Development Status :: 5 - Production/Stable',
