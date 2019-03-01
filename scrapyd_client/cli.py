@@ -29,25 +29,32 @@ def parse_cli_args(args):
     mainparser.add_argument('-t', '--target', default=target_default,
                             help="Specifies the Scrapyd's API base URL.")
 
-    parser = subparsers.add_parser('deploy', description=commands.deploy.__doc__)
+    parser = subparsers.add_parser('deploy',
+                                   description=commands.deploy.__doc__)
     parser.set_defaults(action=commands.deploy)
 
-    parser = subparsers.add_parser('projects', description=commands.projects.__doc__)
+    parser = subparsers.add_parser('projects',
+                                   description=commands.projects.__doc__)
     parser.set_defaults(action=commands.projects)
 
-    parser = subparsers.add_parser('schedule', description=commands.schedule.__doc__)
+    parser = subparsers.add_parser('schedule',
+                                   description=commands.schedule.__doc__)
     parser.set_defaults(action=commands.schedule)
     parser.add_argument('-p', '--project', **project_kwargs)
     parser.add_argument('spider', metavar='SPIDER',
-                        help='Specifies the spider, can be a globbing pattern.')
+                        help='Specifies the spider, '
+                             'can be a globbing pattern.')
     parser.add_argument('--arg', action='append', default=[],
-                        help='Additional argument (key=value), can be specified multiple times.')
+                        help='Additional argument (key=value), '
+                             'can be specified multiple times.')
 
-    parser = subparsers.add_parser('spiders', description=commands.spiders.__doc__)
+    parser = subparsers.add_parser('spiders',
+                                   description=commands.spiders.__doc__)
     parser.set_defaults(action=commands.spiders)
     parser.add_argument('-p', '--project', **project_kwargs)
     parser.add_argument('-v', '--verbose', action='store_true', default=False,
-                        help="Prints project's and spider's name in each line, intended for "
+                        help="Prints project's and spider's name "
+                             "in each line, intended for "
                              "processing stdout in scripts.")
 
     # TODO remove next two lines when 'deploy' is moved to this module
@@ -63,6 +70,7 @@ def parse_cli_args(args):
 
 
 def main():
+    exit_code = 0
     try:
         args = parse_cli_args(sys.argv[1:])
         args.action(args)
@@ -86,11 +94,10 @@ def main():
         print('Received a malformed response:')
         print(text)
         exit_code = 1
-    except Exception:
-        print('Caught unhandled exception, please report at {}'.format(ISSUE_TRACKER_URL))
+    except Exception:  # noqa
+        print('Caught unhandled exception, '
+              'please report at {}'.format(ISSUE_TRACKER_URL))
         print_exc()
         exit_code = 3
-    else:
-        exit_code = 0
     finally:
         raise SystemExit(exit_code)

@@ -44,4 +44,6 @@ def spiders(args):
             else:
                 print(INDENT_PREFIX + 'No spiders.')
         elif project_spiders:
-            print('\n'.join('{} {}'.format(project, x) for x in project_spiders))
+            print(
+                '\n'.join('{} {}'.format(project, x) for x in project_spiders)
+            )

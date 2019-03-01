@@ -32,7 +32,7 @@ def get_spiders(url, project, pattern='*'):
     return fnmatch.filter(response['spiders'], pattern)
 
 
-def schedule(url, project, spider, args={}):
+def schedule(url, project, spider, args=None):
     """ Schedules a spider to be executed.
         :param url: The base URL of the Scrapd instance.
         :type url: str
@@ -41,10 +41,12 @@ def schedule(url, project, spider, args={}):
         :param spider: The name of the spider.
         :type project: str
         :param args: Extra arguments to the spider.
-        :type pattern: mapping
+        :type args: dict
         :returns: The job id.
         :rtype: str
     """
+    if not args:
+        args = dict()
     data = args.copy()
     data.update({'project': project, 'spider': spider})
     response = post_request(url + '/schedule.json', data=data)
