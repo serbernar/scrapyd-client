@@ -3,12 +3,13 @@ name = "scrapyd_client"
 version = "1.2.1"
 description = "dimdim scrapyd-client"
 authors = ["s.berebko <serbernar1@gmail.com>"]
-license = "MIT"
+license = "BSD License"
 
 [tool.poetry.dependencies]
-python = "3.7"
+python = "^3.7"
 requests = "^2.21"
 scrapy = "^1.6"
+bumpversion = "^0.5.3"
 
 
 [tool.poetry.dev-dependencies]

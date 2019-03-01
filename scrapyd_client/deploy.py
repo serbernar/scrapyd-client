@@ -15,7 +15,6 @@ from scrapy.utils.conf import get_config, closest_scrapy_cfg
 from scrapy.utils.http import basic_auth_header
 from scrapy.utils.project import inside_project
 from scrapy.utils.python import retry_on_eintr
-import setuptools  # noqa: F401 not used in code but needed in runtime, don't remove!
 from six.moves.urllib.error import URLError, HTTPError
 from six.moves.urllib.parse import urljoin, urlparse
 from six.moves.urllib.request import (
@@ -39,15 +38,17 @@ setup(
 
 
 def parse_opts():
-    parser = OptionParser(usage="%prog [options] [ [target] | -l | -L <target> ]",
-                          description="Deploy Scrapy project to Scrapyd server")
+    parser = OptionParser(
+        usage="%prog [options] [ [target] | -l | -L <target> ]",
+        description="Deploy Scrapy project to Scrapyd server")
     parser.add_option("-p", "--project",
                       help="the project name in the target")
     parser.add_option("-v", "--version",
                       help="the version to deploy. Defaults to current timestamp")
     parser.add_option("-l", "--list-targets", action="store_true",
                       help="list available targets")
-    parser.add_option("-a", "--deploy-all-targets", action="store_true", help="deploy all targets")
+    parser.add_option("-a", "--deploy-all-targets", action="store_true",
+                      help="deploy all targets")
     parser.add_option("-d", "--debug", action="store_true",
                       help="debug mode (do not remove build dir)")
     parser.add_option("-L", "--list-projects", metavar="TARGET",
@@ -186,7 +187,8 @@ def _url(target, action):
 def _get_version(target, opts):
     version = opts.version or target.get('version')
     if version == 'HG':
-        p = Popen(['hg', 'tip', '--template', '{rev}'], stdout=PIPE, universal_newlines=True)
+        p = Popen(['hg', 'tip', '--template', '{rev}'], stdout=PIPE,
+                  universal_newlines=True)
         d = 'r%s' % p.communicate()[0]
         p = Popen(['hg', 'branch'], stdout=PIPE, universal_newlines=True)
         b = p.communicate()[0].strip('\n')
@@ -195,7 +197,8 @@ def _get_version(target, opts):
         p = Popen(['git', 'describe'], stdout=PIPE, universal_newlines=True)
         d = p.communicate()[0].strip('\n')
         if p.wait() != 0:
-            p = Popen(['git', 'rev-list', '--count', 'HEAD'], stdout=PIPE, universal_newlines=True)
+            p = Popen(['git', 'rev-list', '--count', 'HEAD'], stdout=PIPE,
+                      universal_newlines=True)
             d = 'r%s' % p.communicate()[0].strip('\n')
 
         p = Popen(['git', 'rev-parse', '--abbrev-ref', 'HEAD'],
@@ -273,7 +276,9 @@ def _build_egg():
     d = tempfile.mkdtemp(prefix="scrapydeploy-")
     o = open(os.path.join(d, "stdout"), "wb")
     e = open(os.path.join(d, "stderr"), "wb")
-    retry_on_eintr(check_call, [sys.executable, 'setup.py', 'clean', '-a', 'bdist_egg', '-d', d],
+    retry_on_eintr(check_call,
+                   [sys.executable, 'setup.py', 'clean', '-a', 'bdist_egg',
+                    '-d', d],
                    stdout=o, stderr=e)
     o.close()
     e.close()
@@ -289,7 +294,7 @@ def _create_default_setup_py(**kwargs):
 class HTTPRedirectHandler(UrllibHTTPRedirectHandler):
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):
-        newurl = newurl.replace(' ', '%20')
+        new_url = newurl.replace(' ', '%20')
         if code in (301, 307):
             return Request(newurl,
                            data=req.get_data(),
@@ -297,10 +302,12 @@ class HTTPRedirectHandler(UrllibHTTPRedirectHandler):
                            origin_req_host=req.get_origin_req_host(),
                            unverifiable=True)
         elif code in (302, 303):
-            newheaders = dict((k, v) for k, v in req.headers.items()
-                              if k.lower() not in ("content-length", "content-type"))
-            return Request(newurl,
-                           headers=newheaders,
+            new_headers = dict(
+                (k, v) for k, v in req.headers.items()
+                if k.lower() not in ("content-length", "content-type")
+            )
+            return Request(new_url,
+                           headers=new_headers,
                            origin_req_host=req.get_origin_req_host(),
                            unverifiable=True)
         else:

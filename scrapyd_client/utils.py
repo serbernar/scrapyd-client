@@ -1,5 +1,8 @@
+from configparser import NoOptionError, NoSectionError
+from json.decoder import JSONDecodeError
 from os.path import join, dirname
 import sys
+from textwrap import indent
 
 from scrapy.utils.conf import get_config as get_scrapy_config
 
@@ -22,23 +25,7 @@ class MalformedRespone(Exception):
     pass
 
 
-if sys.version_info < (3,):
-    from ConfigParser import NoOptionError, NoSectionError
-else:
-    from configparser import NoOptionError, NoSectionError
 
-
-if sys.version_info < (3, 3):
-    def indent(s, prefix):
-        return '\n'.join(prefix + x for x in s.splitlines())
-else:
-    from textwrap import indent  # noqa: F401
-
-
-if sys.version_info < (3, 5):
-    JSONDecodeError = ValueError
-else:
-    from json.decoder import JSONDecodeError
 
 
 scrapy_config = get_scrapy_config()
@@ -47,11 +34,7 @@ scrapy_config = get_scrapy_config()
 def get_config(section, option, fallback):
     """ Compatibilty wrapper for Python 2.7 which lacks the fallback parameter
         in :meth:`ConfigParser.ConfigParser.get`. """
-    # TODO remove when Python 2 support is dropped.
-    try:
-        return scrapy_config.get(section, option)
-    except (NoOptionError, NoSectionError):
-        return fallback
+    return fallback
 
 
 def _process_response(response):
@@ -72,7 +55,7 @@ def _process_response(response):
     return response
 
 
-def get_request(url, params={}):
+def get_request(url, params: dict = None):
     """ Dispatches a request with GET method.
         :param url: The URL to request.
         :type url: str
@@ -81,6 +64,8 @@ def get_request(url, params={}):
         :returns: The processed response.
         :rtype: mapping
     """
+    if not params:
+        params = dict()
     response = requests.get(url, params=params, headers=HEADERS)
     return _process_response(response)
 

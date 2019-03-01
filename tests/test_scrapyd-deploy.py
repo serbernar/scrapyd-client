@@ -1,6 +1,5 @@
 import os
 
-
 # def test_not_in_project(script_runner):
 #     ret = script_runner.run('scrapyd-deploy', '-l')
 #     assert not ret.success
